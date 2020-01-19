@@ -54,7 +54,7 @@ func NewClientWithConfig(config *Config) (*Client, error) {
 	}, nil
 }
 
-func (c *Client) call(ctx context.Context, method string, apiPath string, urlParams url.Values, res interface{}) error {
+func (c *Client) call(ctx context.Context, method string, apiPath string, urlParams url.Values, res Response) error {
 	u, err := url.Parse(c.config.Endpoint)
 	if err != nil {
 		return err
@@ -81,10 +81,19 @@ func (c *Client) call(ctx context.Context, method string, apiPath string, urlPar
 	if res == nil {
 		return nil
 	}
-	return json.NewDecoder(response.Body).Decode(&res)
+	if err := json.NewDecoder(response.Body).Decode(&res); err != nil {
+		return err
+	}
+
+	return res.Err()
 }
 
 // SetHTTPClient overrides the default HTTP client.
 func SetHTTPClient(client *http.Client) {
 	httpClient = client
+}
+
+type Response interface {
+	GetStatusCode() int
+	Err() error
 }

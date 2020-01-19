@@ -13,13 +13,13 @@ const (
 )
 
 type CitiesResponse struct {
-	Message interface{} `json:"message"`
-	Result  []struct {
-		PrefCode    int    `json:"prefCode"`
+	Result []struct {
+		PrefCode    int64  `json:"prefCode"`
 		CityCode    string `json:"cityCode"`
 		CityName    string `json:"cityName"`
 		BigCityFlag string `json:"bigCityFlag"`
 	} `json:"result"`
+	Body
 }
 
 func (c *Client) GetCities(ctx context.Context) (*CitiesResponse, error) {

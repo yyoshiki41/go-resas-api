@@ -11,11 +11,11 @@ const (
 )
 
 type PrefecturesResponse struct {
-	Message interface{} `json:"message"`
-	Result  []struct {
-		PrefCode int    `json:"prefCode"`
+	Result []struct {
+		PrefCode int64  `json:"prefCode"`
 		PrefName string `json:"prefName"`
 	} `json:"result"`
+	Body
 }
 
 func (c *Client) GetPrefectures(ctx context.Context) (*PrefecturesResponse, error) {
